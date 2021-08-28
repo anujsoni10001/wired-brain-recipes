@@ -1,0 +1,345 @@
+create table dept(
+  deptno     float(2,0),
+  dname      varchar(14),
+  loc        varchar(13),
+  constraint pk_dept primary key (deptno)
+)
+
+create table emp(
+  empno    float(4,0),
+  ename    varchar(10),
+  job      varchar(9),
+  mgr      float(4,0),
+  hiredate date,
+  sal      float(7,2),
+  comm     float(7,2),
+  deptno   float(2,0),
+  constraint pk_emp primary key (empno),
+  constraint fk_deptno foreign key (deptno) references dept (deptno)
+)
+
+-------------------------------------------------------------------
+DML
+
+insert into DEPT (DEPTNO, DNAME, LOC) values(10, 'ACCOUNTING', 'NEW YORK')
+
+insert into dept values(30, 'SALES', 'CHICAGO')
+
+insert into dept values(40, 'OPERATIONS', 'BOSTON')
+
+insert into dept values(20, 'RESEARCH', 'DALLAS')
+
+insert into emp
+values(
+ 7839, 'KING', 'PRESIDENT', null,
+ STR_TO_DATE('17-11-1981','%d-%m-%Y'),
+ 5000, null, 10
+)
+
+insert into emp
+values(
+ 7698, 'BLAKE', 'MANAGER', 7839,
+ STR_TO_DATE('1-5-1981','%d-%m-%Y'),
+ 2850, null, 30
+)
+
+insert into emp
+values(  
+ 7782, 'CLARK', 'MANAGER', 7839,  
+ STR_TO_DATE('9-6-1981','%d-%m-%Y'),  
+ 2450, null, 10  
+);
+
+ 
+
+insert into emp  
+values(  
+ 7566, 'JONES', 'MANAGER', 7839,  
+ STR_TO_DATE('2-4-1981','%d-%m-%Y'),  
+ 2975, null, 20  
+);
+
+ 
+
+insert into emp  
+values(  
+ 7788, 'SCOTT', 'ANALYST', 7566,  
+ STR_TO_DATE('13-JUL-87','%d-%b-%y'),  
+ 3000, null, 20  
+);
+
+insert into emp  
+values(  
+ 7902, 'FORD', 'ANALYST', 7566,  
+ STR_TO_DATE('3-12-1981','%d-%m-%Y'),  
+ 3000, null, 20  
+)
+
+ 
+
+insert into emp  
+values(  
+ 7369, 'SMITH', 'CLERK', 7902,  
+ STR_TO_DATE('17-12-1980','%d-%m-%Y'),  
+ 800, null, 20  
+)
+
+ 
+
+insert into emp  
+values(  
+ 7499, 'ALLEN', 'SALESMAN', 7698,  
+ STR_TO_DATE('20-2-1981','%d-%m-%Y'),  
+ 1600, 300, 30  
+)
+[12:46 PM] Amit (Guest)
+    
+insert into emp  
+values(  
+ 7521, 'WARD', 'SALESMAN', 7698,  
+ STR_TO_DATE('22-2-1981','%d-%m-%Y'),  
+ 1250, 500, 30  
+)
+
+
+insert into emp  
+values(  
+ 7654, 'MARTIN', 'SALESMAN', 7698,  
+ STR_TO_DATE('28-9-1981','%d-%m-%Y'),  
+ 1250, 1400, 30  
+)
+
+
+insert into emp  
+values(  
+ 7844, 'TURNER', 'SALESMAN', 7698,  
+ STR_TO_DATE('8-9-1981','%d-%m-%Y'),  
+ 1500, 0, 30  
+)
+
+insert into emp  
+values(  
+ 7876, 'ADAMS', 'CLERK', 7788,  
+ STR_TO_DATE('13-JUL-87', '%d-%b-%y'),  
+ 1100, null, 20  
+)
+
+ 
+
+insert into emp  
+values(  
+ 7900, 'JAMES', 'CLERK', 7698,  
+ STR_TO_DATE('3-12-1981','%d-%m-%Y'),  
+ 950, null, 30  
+)
+
+ 
+
+insert into emp  
+values(  
+ 7934, 'MILLER', 'CLERK', 7782,  
+ STR_TO_DATE('23-1-1982','%d-%m-%Y'),  
+ 1300, null, 10  
+)
+
+
+------------------------------------------------------------------------
+DQL(Data Query Language)
+
+
+    select * from emp;
+
+    select empno, ename, job from emp;
+
+    select empno, ename, job from emp where mgr = 7839;
+
+    select * from emp where sal < 1500;
+
+    select * from emp where sal < 1500 AND deptno=30;
+
+    select * from emp where sal = 1250 OR sal = 1500;
+
+    select * from emp where sal IN (1250,1500);
+    
+    select * from emp where sal <=2500 AND sal >=1500;
+
+    select * from emp where sal BETWEEN 1500 AND 2500;
+    
+    select ename from Emp where ename LIKE 'J%S';
+    
+    select * from emp where MGR IS NULL;
+
+    SELECT ename, job, sal FROM emp WHERE ename LIKE 'S%'OR job LIKE '%MAN%';
+    
+    SELECT ename,deptno FROM emp WHERE deptno NOT IN ( 10,20 );
+
+    select DISTINCT JOB from emp;
+
+    select * from emp ORDER BY sal;
+    
+    select * from emp ORDER BY sal DESC;
+ 
+    select * from emp ORDER BY sal DESC, ename ASC;
+
+    SELECT SUM(Sal) AS TOTALSAL From Emp;
+
+    SELECT AVG(Sal) AS AVERAGESAL From Emp;
+
+    SELECT AVG(Sal) From Emp where EName LIKE 'm%_';
+
+    SELECT MIN(Sal) From Emp;
+
+    SELECT MAX(Sal) From Emp;
+
+    SELECT COUNT(*) From Emp;
+
+    SELECT COUNT(DISTINCT Salary) From Emp;
+     
+    UPDATE dept
+    SET dname = 'IT'
+    WHERE deptno=10;
+   
+    -------------JOIN--------------------------------------
+
+   select ename, dname, job, empno, hiredate, loc
+	from emp, dept
+	where emp.deptno = dept.deptno
+	order by ename
+
+CROSS JOIN - Cartesian Product
+	Inner Join - Equality
+	Outer Join - Left Outer, Right Outer Join, Full Outer Join
+	Self Join
+
+SELECT Emp.empno, Emp.ename, Emp.deptno, Dept.dname FROM Emp
+CROSS JOIN Dept;  [ OR ]
+SELECT Emp.empno, Emp.ename, Emp.deptno, Dept.dname
+FROM Emp, Dept;
+
+SELECT Emp.empno, Emp.ename, Dept.dname From Emp
+INNER JOIN Dept ON Emp.deptno = Dept.deptno;  [OR]
+SELECT Emp.empno, Emp.ename, Dept.dname From Emp,
+Dept where Emp.deptno = Dept.deptno;
+
+insert into emp
+values(
+ 7777, 'MAX', 'MULLAR', 7782,
+ str_to_date('23-1-1982','%d-%m-%Y'),
+ 1300, null, null
+)
+
+SELECT Emp.empno, Emp.ename, Dept.dname From Emp
+LEFT OUTER JOIN Dept ON Emp.deptno = Dept.deptno;
+
+
+    LEFT OUTER JOIN Dept ON Emp.deptno = Dept.deptno
+UNION
+SELECT Emp.empno, Emp.ename, Dept.dname From Emp
+RIGHT OUTER JOIN Dept ON Emp.deptno = Dept.deptno;
+
+    SELECT Emp.empno, Emp.ename, Dept.dname From Emp
+LEFT OUTER JOIN Dept ON Emp.deptno = Dept.deptno
+UNION
+SELECT Emp.empno, Emp.ename, Dept.dname From Emp
+RIGHT OUTER JOIN Dept ON Emp.deptno = Dept.deptno;
+ 
+SELF JOIN(Using concept of Alices..)
+
+SELECT e.ename, m.ename AS "ManagerName" FROM Emp e
+INNER JOIN Emp m ON e.mgr = m.empno;
+
+
+    import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+class Activity{
+  //Implement Activity class here..
+String string1;
+String string2;
+String operator;
+
+Activity(String string1,String string2,String operator){
+this.string1=string1;
+this.string2=string2;
+this.operator=operator;
+}
+
+String handleException(Activity a) {
+if(a.string1.isEmpty()==false && a.string2.isEmpty()==false ){
+return "No Exception Found";
+}
+else{
+throw new NullPointerException();
+return "Null values found";
+}
+}
+
+
+
+public class Source {
+  //Implement the two function given in description in here...
+  
+	public static void main(String args[] ) throws Exception {
+    //Write your own main to check the program...
+	}
+}
+
+
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class Employee {
+String name;
+int salary;
+public Employee(String name, int salary) {
+	super();
+	this.name = name;
+	this.salary = salary;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public int getSalary() {
+	return salary;
+}
+public void setSalary(int salary) {
+	this.salary = salary;
+}
+}
+
+
+class EmployeeInfo{
+	
+	enum SortMethod {
+		BYNAME,BYSALARY
+	};
+
+	public boolean isCharacterPresentInAllNames(Collection<Employee> entities, String character) {
+		
+	}
+  
+	
+    public List<Employee> sort(List<Employee> emps, final SortMethod method){
+	Collections.sort(emps,new Comparator<Employee>() {
+
+		@Override
+		public int compare(Employee o1, Employee o2) {
+			// TODO Auto-generated method stub
+			
+			if(SortMethod.BYNAME==method)
+			return o1.getName().compareTo(o2.getName());
+			else
+			return o1.getSalary()-o2.getSalary();
+		}
+	});
+	return emps;
+    }
+
+   
+}
